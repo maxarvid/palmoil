@@ -11,6 +11,7 @@
   "author": "maxarvid",
   "license": "ISC",
   "devDependencies": {
+    "cssnano": "^4.1.7",
     "eslint": "^5.5.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-config-standard": "^12.0.0",
