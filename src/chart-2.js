@@ -28,6 +28,9 @@ d3.csv(require('./data/Four_countries_cleaned.csv'))
 function ready(datapoints) {
   console.log('data is', datapoints)
 
+  // Sort by reverse size:  
+  datapoints.sort((a, b) => a['Percent palm'] - b['Percent palm'])
+
   var names = datapoints.map(d => d['Country Name'])
   yPositionScale.domain(names)
 

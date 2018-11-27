@@ -13,11 +13,9 @@ var svg = d3
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-
+// Create x and y scales:
 var xPositionScale = d3.scaleLinear().range([0, width])
 var yPositionScale = d3.scaleBand().range([height, 0]).padding(0.2)
-
-// var colorScale = d3.scaleOrdinal().range(['pink', 'cyan', 'magenta', 'mauve'])
 
 // Reading in the data
 d3.csv(require('./data/Four_countries_cleaned.csv'))
@@ -27,10 +25,14 @@ d3.csv(require('./data/Four_countries_cleaned.csv'))
 // Ready function go!
 function ready(datapoints) {
   console.log('data is', datapoints)
-  
+
+  // Sort by reverse size:  
+  datapoints.sort((a, b) => a['Palm area'] - b['Palm area'])
+
+  // setting the domains for our scalars:
   var PalmAreaList = datapoints.map(d => +d['Palm area'])
-  console.log(d3.max(PalmAreaList))
   xPositionScale.domain([0, d3.max(PalmAreaList)])
+
   var names = datapoints.map(d => d['Country Name'])
   yPositionScale.domain(names)
 
@@ -56,7 +58,6 @@ function ready(datapoints) {
     .attr('y', 0)
     .attr('text-anchor', 'middle')
     .attr('alignment-baseline', 'middle')
-
 
 
   // Axes
