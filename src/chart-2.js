@@ -6,7 +6,7 @@ var width = 780 - margin.left - margin.right
 
 // Grab & create SVG
 var svg = d3
-  .select('#chart-1')
+  .select('#chart-2')
   .append('svg')
   .attr('height', height + margin.top + margin.bottom)
   .attr('width', width + margin.left + margin.right)
@@ -14,7 +14,7 @@ var svg = d3
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
 
-var xPositionScale = d3.scaleLinear().range([0, width])
+var xPositionScale = d3.scaleLinear().range([0, width]).domain([0, 50])
 var yPositionScale = d3.scaleBand().range([height, 0]).padding(0.2)
 
 // var colorScale = d3.scaleOrdinal().range(['pink', 'cyan', 'magenta', 'mauve'])
@@ -27,10 +27,7 @@ d3.csv(require('./data/Four_countries_cleaned.csv'))
 // Ready function go!
 function ready(datapoints) {
   console.log('data is', datapoints)
-  
-  var PalmAreaList = datapoints.map(d => +d['Palm area'])
-  console.log(d3.max(PalmAreaList))
-  xPositionScale.domain([0, d3.max(PalmAreaList)])
+
   var names = datapoints.map(d => d['Country Name'])
   yPositionScale.domain(names)
 
@@ -43,23 +40,22 @@ function ready(datapoints) {
     .classed('bars', true)
     .attr('x', 0)
     .attr('y', d => yPositionScale(d['Country Name']))
-    .attr('width', d => xPositionScale(+d['Palm area']))
+    .attr('width', d => xPositionScale(+d['Percent palm']))
     .attr('height', yPositionScale.bandwidth())
     .attr('fill', 'lightgrey')
 
-  // Adding title
+  // adding title text
   svg
     .append('text')
     .classed('title-text', true)
-    .text('Area of palm oil concessions')
+    .text('Percent palm oil')
     .attr('x', width / 2)
     .attr('y', 0)
     .attr('text-anchor', 'middle')
     .attr('alignment-baseline', 'middle')
 
 
-
-  // Axes
+  // axes
   const xAxis = d3.axisBottom(xPositionScale)
     svg
       .append('g')
@@ -72,4 +68,7 @@ function ready(datapoints) {
       .append('g')
       .attr('class', 'axis y-axis')
       .call(yAxis)
+
+
+
 }
