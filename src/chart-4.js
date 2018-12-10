@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-var margin = { top: 30, left: 100, right: 30, bottom: 30 }
+var margin = { top: 30, left: 100, right: 100, bottom: 30 }
 var height = 400 - margin.top - margin.bottom
 var width = 780 - margin.left - margin.right
 
@@ -27,14 +27,10 @@ d3.csv(require('./data/equator_distance.csv'))
 
 // Ready function go!
 function ready(datapoints) {
-  console.log('data is', datapoints)
-
+  // console.log('data is', datapoints)
 
   var names = datapoints.map(d => d['country'])
   xPositionScale.domain(names)
-
-  console.log(names)
-
 
   // Adding circles
   svg
@@ -59,6 +55,8 @@ function ready(datapoints) {
     .attr('width', 5)
     .attr('height', d => height - yPositionScale(+d.equator_distance.slice(0, -3)))
     .attr('fill', 'black')
+    .attr('opacity', 0.7)
+    .lower()
 
   // axes
   const xAxis = d3.axisBottom(xPositionScale)
@@ -73,7 +71,4 @@ function ready(datapoints) {
       .append('g')
       .attr('class', 'axis y-axis')
       .call(yAxis)
-
-
-
 }
