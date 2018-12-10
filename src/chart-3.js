@@ -21,6 +21,7 @@ let svg = d3
 
 let projection = d3.geoNaturalEarth1()
 let path = d3.geoPath().projection(projection)
+let graticule = d3.geoGraticule()
 
 // read in map data
 d3.json(require('./data/world.topojson'))
@@ -30,7 +31,7 @@ d3.json(require('./data/world.topojson'))
 function ready(json) {
   let countries = topojson.feature(json, json.objects.countries)
   projection.fitSize([width, height], countries)
-  // console.log(countries)
+  // console.log(countries.features)
 
   // draw the countries
   svg
@@ -41,8 +42,30 @@ function ready(json) {
     .append('path')
     .attr('class', 'country')
     .attr('d', path)
-    .attr('fill', '#F5ECCE')
+    .attr('fill', d => {
+      if(['Liberia', 'Indonesia', 'Cameroon', 'Malaysia', 'Congo'].includes(d.properties.name)) {
+        return 'red'
+      } else {
+     return '#F5ECCE'
+     }
+  })
     .attr('stroke', 'black')
     .attr('stroke-width', 0.1)
-  
+  // draw the graticules
+  svg
+    .append('path')
+    .datum(graticule())
+    .attr('d', path)
+    .attr('stroke', 'lightgrey')
+    .attr('stroke-width', 0.5)
+    .attr('fill', 'none')
+    .lower()
+
+  // draw the equator
+  svg
+    .append("path")
+    .datum({type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]]})
+    .attr("class", "equator")
+    .attr('stroke', 'red')
+    .attr("d", path);
 }
