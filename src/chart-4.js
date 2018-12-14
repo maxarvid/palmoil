@@ -4,7 +4,7 @@ import { legendColor } from 'd3-svg-legend'
 
 var margin = { top: 0, left: 0, right: 0, bottom: 0 }
 var height = 500 - margin.top - margin.bottom
-var width = 800 - margin.left - margin.right
+var width = 700 - margin.left - margin.right
 
 // Grab & create SVG
 var svg = d3
@@ -34,7 +34,7 @@ var colorScale = d3.scaleThreshold()
 // legend
 var g = svg.append('g')
   .attr('class', 'legendThreshold')
-  .attr('transform', 'translate(0, 150)')
+  .attr('transform', 'translate(0, 170)')
 
 g.append('text')
   // .attr('class', 'caption')
