@@ -1,6 +1,8 @@
 import * as d3 from 'd3'
+import * as topojson from 'topojson'
+import { legendColor } from 'd3-svg-legend'
 
-var margin = { top: 30, left: 100, right: 100, bottom: 30 }
+var margin = { top: 0, left: 30, right: 30, bottom: 0 }
 var height = 400 - margin.top - margin.bottom
 var width = 780 - margin.left - margin.right
 
@@ -13,62 +15,81 @@ var svg = d3
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
+// Map and projection
+var projection = d3.geoEquirectangular()
+    .scale(width / 2 / Math.PI)
+    .translate([width / 2, height / 2])
+var path = d3.geoPath()
+    .projection(projection)
 
-var xPositionScale = d3.scaleBand().range([0, width]).padding(1)
+// data and colorScale
+var importData = d3.map()
+var exportData = d3.map()
+var colorScheme = d3.schemeReds[6]
+colorScheme.unshift('#eee')
+var colorScale = d3.scaleThreshold()
+  .domain([1, 6, 11, 26, 101, 1001])
+  .range(colorScheme)
 
-var yPositionScale = d3.scaleLinear().range([height, 0]).domain([0, 700])
+// legend
+var g = svg.append('g')
+  .attr('class', 'legendThreshold')
+  .attr('transform', 'translate(20, 20)')
 
-// var colorScale = d3.scaleOrdinal().range(['pink', 'cyan', 'magenta', 'mauve'])
+g.append('text')
+  .attr('class', 'caption')
+  .attr('x', 0)
+  .attr('y', -6)
+  .text('Exports in USD')
+var labels = ['0', '1-5', '6-10', '11-25', '26-100', '101-1000', '> 1000']
+var legend = legendColor()
+    .labels(function (d) { return labels[d.i]; })
+    .shapePadding(4)
+    .scale(colorScale);
+svg.select('.legendThreshold')
+    .call(legend)
 
-// Reading in the data
-d3.csv(require('./data/equator_distance.csv'))
+Promise.all([
+  d3.csv(require('./data/importsSummed.csv'), d => { importData.set(d.country, +d.tradeUSD) }),
+  d3.csv(require('./data/exportsSummed.csv'), d => { exportData.set(d.country, +d.tradeUSD) }),
+  d3.json(require('./data/world.topojson'))
+])
   .then(ready)
-  .catch(err => console.log('Failed with', err))
+  .catch(err => console.log('Failed on', err))
 
 // Ready function go!
 function ready(datapoints) {
-  // console.log('data is', datapoints)
+  // console.log('data is: ', datapoints)
+  var importDatapoints = datapoints[0],
+      exportDatapoints = datapoints[1],
+      json = datapoints[2]
 
-  var names = datapoints.map(d => d['country'])
-  xPositionScale.domain(names)
+  let countries = topojson.feature(json, json.objects.countries)
+  projection.fitSize([width, height], countries)
+  // console.log(countries.features)
 
-  // Adding circles
+  console.log(exportData.get('Algeria'))
+
+  // draw the countries
   svg
-    .selectAll('circle')
-    .data(datapoints)
+    .append('g')
+    .selectAll('.country')
+    .data(countries.features)
     .enter()
-    .append('circle')
-    .attr('cx', d => xPositionScale(d.country))
-    .attr('cy', d => {
-      // console.log(+d.equator_distance.slice(0,-3))
-      return yPositionScale(+d.equator_distance.slice(0, -3))
+    .append('path')
+    .attr('class', 'country')
+    .attr('d', path)
+    .attr('fill', d => {
+      // // console.log(d.properties.name)
+      var tradeUSD = importData.get(d.properties.name)
+      console.log(tradeUSD)
+      return colorScale(tradeUSD)
     })
-    .attr('r', 5)
-
-  svg
-    .selectAll('rect')
-    .data(datapoints)
-    .enter()
-    .append('rect')
-    .attr('x', d => xPositionScale(d.country) - 2.5)
-    .attr('y', d => yPositionScale(+d.equator_distance.slice(0, -3)))
-    .attr('width', 5)
-    .attr('height', d => height - yPositionScale(+d.equator_distance.slice(0, -3)))
-    .attr('fill', 'black')
-    .attr('opacity', 0.7)
+    .attr('stroke', 'black')
+    .attr('stroke-width', 0.1)
     .lower()
 
-  // axes
-  const xAxis = d3.axisBottom(xPositionScale)
-    svg
-      .append('g')
-      .attr('class', 'axis x-axis')
-      .attr('transform', `translate(0, ${height})`)
-      .call(xAxis)
 
-  const yAxis = d3.axisLeft(yPositionScale)
-    svg
-      .append('g')
-      .attr('class', 'axis y-axis')
-      .call(yAxis)
+
+
 }
