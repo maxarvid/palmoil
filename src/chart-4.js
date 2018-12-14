@@ -34,7 +34,7 @@ var colorScale = d3.scaleThreshold()
 // legend
 var g = svg.append('g')
   .attr('class', 'legendThreshold')
-  .attr('transform', 'translate(20, 20)')
+  .attr('transform', 'translate(0, 150)')
 
 g.append('text')
   //.attr('class', 'caption')

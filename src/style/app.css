@@ -50,9 +50,11 @@ body {
 
 
 .legendThreshold {
-      font-size: 12px;
+      font-size: 8px;
       font-family: sans-serif;
   }
+
+
 
 /*
 super-font
@@ -129,7 +131,7 @@ sub-font
 }
 
 .label {
-    font-size: 1.25rem;
+    font-size: 10;
     line-height: 1.25;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
