@@ -49,6 +49,11 @@ body {
 }
 
 
+.legendThreshold {
+      font-size: 12px;
+      font-family: sans-serif;
+  }
+
 /*
 super-font
 .headline
@@ -128,7 +133,7 @@ sub-font
     line-height: 1.25;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
-    font-weight: 700;
+    font-weight: 200;
 }
 
 .label-text {

@@ -8,7 +8,7 @@ var width = 600 - margin.left - margin.right
 
 // Grab & create SVG
 var svg = d3
-  .select('#chart-4')
+  .select('#chart-5')
   .append('svg')
   .attr('height', height + margin.top + margin.bottom)
   .attr('width', width + margin.left + margin.right)
@@ -37,10 +37,10 @@ var g = svg.append('g')
   .attr('transform', 'translate(20, 20)')
 
 g.append('text')
-  //.attr('class', 'caption')
+  // .attr('class', 'caption')
   .attr('x', 0)
   .attr('y', -6)
-  .text('Imports in USD')
+  .text('Exports in USD')
 var labels = ['data not available', '> 500,000', '500,000-1M', '1m-5M', '5M-20M', '20M-40M', '> 40M']
 var legend = legendColor()
     .labels(function (d) { return labels[d.i]; })
@@ -78,7 +78,7 @@ function ready(datapoints) {
     .attr('class', 'country')
     .attr('d', path)
     .attr('fill', d => {
-      var tradeUSD = importData.get(d.properties.name)
+      var tradeUSD = exportData.get(d.properties.name)
       if (tradeUSD) return colorScale(tradeUSD)
       else return 'lightgrey'
     })
