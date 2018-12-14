@@ -26,6 +26,27 @@ body {
     width: 100%;
 }
 
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 2vh;
+    align-self: flex-start;
+}
+
+.step {
+    min-height: 70vh;
+}
+
+.step > p {
+    background: rgba(255,255,255,0.9);
+    padding: 10px 0;
+    margin-bottom: 0;
+    padding-bottom: 1rem;
+}
+
+.step > ul, .step > h2, .step > h3 {
+    background: rgba(255,255,255,0.9);
+}
 
 
 /*
