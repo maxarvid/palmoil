@@ -32,6 +32,7 @@
     "enter-view": "^1.0.0",
     "handlebars": "^4.1.2",
     "jest": "^23.6.0",
+    "lodash": "^4.17.14",
     "merge": "^1.2.1",
     "node-fetch": "^2.6.0",
     "robust-point-in-polygon": "^1.0.3",
