@@ -30,7 +30,7 @@
     "d3-svg-legend": "^2.25.6",
     "debounce": "^1.2.0",
     "enter-view": "^1.0.0",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.5.3",
     "jest": "^23.6.0",
     "lodash": "^4.17.14",
     "merge": "^1.2.1",
