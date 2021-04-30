@@ -30,11 +30,11 @@
     "d3-svg-legend": "^2.25.6",
     "debounce": "^1.2.0",
     "enter-view": "^1.0.0",
-    "handlebars": "^4.5.3",
+    "handlebars": "^4.7.7",
     "jest": "^23.6.0",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.21",
     "merge": "^1.2.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "robust-point-in-polygon": "^1.0.3",
     "topojson": "^3.0.2"
   }
